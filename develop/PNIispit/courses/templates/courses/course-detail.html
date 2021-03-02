@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <p>This is my courses-detail page, using template from courses!</p>
+
+    {% if 0 %}
+        <p>ovdeje samo printam varijablu iz contexta za testiranje</p>
+        {{ id_from_url }}
+    {% endif %}
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Detalji predmeta:</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Kod</th>
+                        <td>{{ object.kod }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Ime</th>
+                        <td>{{ object.ime }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">ICTS bodovi</th>
+                        <td>{{ object.bodovi }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Semestar redovni</th>
+                        <td>{{ object.sem_redovni }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Semestar izvanredni</th>
+                        <td>{{ object.sem_izvanredni }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Izborni (Da/Ne)</th>
+                        <td>{{ object.izborni }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Program</th>
+                        <td>{{ object.program }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </li>
+    </ul>
+
+
+{% endblock content %}

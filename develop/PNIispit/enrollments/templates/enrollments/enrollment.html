@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <p>This is my enrollment page, using template from enrlooment!</p>
+
+    <p>{{ student }}</p>
+
+    <p>Svi predmeti, {{ count_svi }}</p>
+    {% for imex in predmeti_svi %}
+    <ul>
+        <li>{{ imex }}, id: {{ imex.id }}</li>
+    </ul>
+    {% endfor %}
+
+    <p>Upisani, {{ count_upis }}</p>
+    {% for x in upisani %}
+    <ul>
+        <li>{{ x.id }}, {{ x.student_id }}, {{ x.predmet_id }}, {{ x.status }}</li>
+        <p>{{ x.student_id.username }}, ECTS: {{ x.predmet_id.bodovi }}</p>
+    </ul>
+    {% endfor %}
+
+    <p>Neupisani, {{ count_neupis }}</p>
+    {% for imex in neupisani %}
+    <ul>
+        <li>{{ imex }}, id: {{ imex.id }}</li>
+    </ul>
+    {% endfor %}
+
+{% endblock content %}

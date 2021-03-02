@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for student in red %}
+    <p>{{ student.first_name }}</p>
+{% endfor %}
+
+<p>Redovni: {{ redc }} <a href="custom2d/r">detalji</a></p>
+
+<p>Izvanredni: {{ izvc }} <a href="custom2d/i">detalji</a></p>
+
+
+{% endblock content %}

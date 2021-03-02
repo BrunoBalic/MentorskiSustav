@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <p>This is my courses page, using template from sourses!</p>
+
+    <ul class="list-group">
+        <li class="list-group-item list-group-item-info">
+            <a href="{% url 'course-create' %}">Add New Course</a>
+        </li>
+    {% for c in object_list %}
+        <li class="list-group-item">
+            {{ c.kod }} -
+            {{ c.ime }}
+            <a href="{% url 'course-detail2' c.id %}">Details</a>
+            <a href="{% url 'course-edit' c.id %}">Edit</a>
+        </li>
+    {% empty %}
+        <li>No courses yet.</li>
+    {% endfor %}
+    </ul>
+
+{% endblock content %}

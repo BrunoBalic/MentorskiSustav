@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<p>Br. rezultata: {{ r1_count }}</p>
+
+{% if r1_count > 0 %}
+    {% for subject in result %}
+        <p>{{ subject.kod }} | {{ subject.bodovi }} | {{ subject.ime }}</p>
+    {% endfor %}
+{% else %}
+    <p>Nema rezultata</p>
+{% endif %}
+
+<h1>drugi</h1>
+<p>Br. rezultata: {{ r2_count }}</p>
+
+{% if r2_count > 0 %}
+    {% for subject in result2 %}
+        <p>{{ subject.kod }} | {{ subject.bodovi }} | {{ subject.ime }}</p>
+    {% endfor %}
+{% else %}
+    <p>Nema rezultata</p>
+{% endif %}
+
+{% endblock content %}

@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="py-3 text-center">
+        <p class="lead">Pregled upisnog lista</p>
+    </div>
+
+    {% if msg %}
+        {{ msg }}
+    {% endif %}
+
+    <div class="row">
+        <!-- DESNA STRANA -->
+        {# komentar po django template sintaksi, ne vidi se u browseru #}
+        <!-- kometar koji se ucita u browser -->
+        <div class="col-md-6 order-md-2 mb-4">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">Upisni list</span>
+                <span class="badge badge-secondary badge-pill">{{ requested_student_email }}</span>
+            </h4>
+            <h6 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">
+                    {% if br_semestara == 6 %}
+                        (Redovni student)
+                    {% else %}
+                        (Izvanredni student)
+                    {% endif %}
+                </span>
+            </h6>
+
+            <div class="overflow-auto border rounded"
+                style="
+                    height: calc(100vh - 200px);
+                    overflow-y: scroll;">
+
+            <ul class="list-group mb-3">
+
+                {% for sem in enrolled_courses %}
+                    <ul class="list-group mb-3">
+
+                        <li class="list-group-item justify-content-between lh-condensed"><!-- class d-flex -->
+                            <div>
+                                <h6 class="my-0 border-bottom">Semestar {{ forloop.counter }}:</h6>
+                                <ul class="p-1 rounded">
+
+                                {% for predmet, status in sem.items %}
+                                    <li class="list-group-item">
+                                        <form method="post">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                            <div class="col-md-8 align-self-center">
+                                                <label style="margin-bottom: 0;">{{ predmet.kod }} - {{ predmet.ime }}</label>
+                                            </div>
+                                            {% if status == 'enrolled' %}
+                                            <div class="col-md-2 align-self-center" style="margin-bottom: 0;">
+                                                <button type="submit" name="mark_passed" value="{{ predmet.id }}" class="btn btn-info">
+                                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L8 9.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                                                        <path fill-rule="evenodd" d="M1.5 13A1.5 1.5 0 0 0 3 14.5h10a1.5 1.5 0 0 0 1.5-1.5V8a.5.5 0 0 0-1 0v5a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V3a.5.5 0 0 1 .5-.5h8a.5.5 0 0 0 0-1H3A1.5 1.5 0 0 0 1.5 3v10z"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 align-self-center" style="margin-bottom: 0;">
+                                                <button type="submit" name="mark_dissenrolled" value="{{ predmet.id }}" class="btn btn-danger">
+                                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            {% elif status == 'passed' %}
+                                            <div class="col-md-2 align-self-center" style="margin-bottom: 0;">
+                                                <button disabled="True" class="btn btn-outline-success">
+                                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 align-self-center" style="margin-bottom: 0;">
+                                                <button type="submit" name="mark_unpassed" value="{{ predmet.id }}" class="btn btn-danger">
+                                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            {% else %}
+                                            {# uopce nesmije doc do ovoga, mora biti statusa, ako ga nema predmet nije upisan... #}
+                                            <div class="col-md-2 align-self-center" style="margin-bottom: 0;">
+                                                <button disabled="True" class="btn btn-primary">
+                                                    Nema statusa
+                                                </button>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        </form>
+                                    </li>
+                                {% empty %}
+                                    <p class="mt-2 mb-0">Nema upisanih predmeta</p>
+                                {% endfor %}
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                {% endfor %}
+            </ul>
+            </div>
+        </div>
+
+        <!-- LIJEVA STRANA -->
+        <div class="col-md-6 order-md-1">
+            <h4 class="mb-3">Predmeti</h4>
+
+            <div class="overflow-auto rounded">
+            <ul class="list-group list-group-flush" style="
+                height: calc(100vh - 200px);
+                overflow-y: scroll;
+                border: solid;
+                border-width: 1px;
+                border-right: none;
+                border-top-left-radius: 5px;
+                border-bottom-left-radius: 5px;
+                border-color: lightgrey;
+            ">
+            <!-- tri stupca -->
+            {% for c in not_enrolled_courses %}
+            <li class="list-group-item">
+            <div class="row">
+                <div class="col-md-2 align-self-center">
+                    <label style="margin-bottom: 0;">{{ c.kod }}</label>
+                </div>
+                <div class="col-md-8 align-self-center" style="margin-bottom: 0;">
+                    <label style="margin-bottom: 0;">{{ c.ime }}</label>
+                </div>
+                <div class="col-md-2 align-self-center" style="margin-bottom: 0;">
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" name="enroll" value="{{ c.id }}" class="btn btn-info">Add</button>
+                    </form>
+                </div>
+            </div><!-- tri stupca -->
+            </li>
+            {% endfor %}
+            </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">IT_OSS 2020</p>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a href="#"></a></li>
+        </ul>
+    </footer>
+</div>
+
+
+
+{% endblock content %}
